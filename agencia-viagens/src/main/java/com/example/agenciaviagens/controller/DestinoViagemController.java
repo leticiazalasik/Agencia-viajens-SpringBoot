@@ -1,7 +1,9 @@
-package com.example.agenciaviagens.controler;
+package com.example.agenciaviagens.controller;
 
 import com.example.agenciaviagens.entity.Destino;
 import com.example.agenciaviagens.entity.DestinoResumo;
+import com.example.agenciaviagens.services.DestinoViagemService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
