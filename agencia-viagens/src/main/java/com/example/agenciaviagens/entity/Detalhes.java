@@ -1,5 +1,8 @@
 package com.example.agenciaviagens.entity;
 
+import jakarta.persistence.Embeddable;
+
+@Embeddable
 public class Detalhes {
 
     private String descricao;
