@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    # O Spring Boot descobre a porta automaticamente, mas deixamos explícita
+    ports:
+      - "54328:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=devweb
+      - POSTGRES_DB=destinos_db
