@@ -1,40 +1,41 @@
 package com.example.agenciaviagens.services;
 
 import com.example.agenciaviagens.entity.Destino;
+import com.example.agenciaviagens.entity.DestinoResumo;
 import com.example.agenciaviagens.repository.DestinoRepository;
-
 import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class DestinoViagemService {
 
     @Autowired
-    private DestinoRepository DestinoRepository;
+    private DestinoRepository destinoRepository;
 
-    public List<Destino> listarComFiltro(String nome, String localizacao, Double nota,
-            Boolean disponivel, Boolean filtrarDisponivel) {
-        List<Destino> destinos = this.DestinoRepository.buscarComFiltrosDinamicos(nome, localizacao, nota, disponivel,filtrarDisponivel);
+    public List<DestinoResumo> listarComFiltro(String nome, String localizacao, Double nota, Boolean disponivel, Boolean filtrarDisponivel) {
+        List<DestinoResumo> destinos = this.destinoRepository.buscarComFiltrosDinamicos(nome, localizacao, nota, disponivel,filtrarDisponivel);
         return destinos;
     }
 
     public Destino criarDestino(Destino destino) {
-        Destino destino_salvo = this.DestinoRepository.save(destino);
-        return destino_salvo;
+        return this.destinoRepository.save(destino);
     }
 
-    public Optional<Destino> buscarDestinoPorId(Long id) {
-        Optional<Destino> destino = this.DestinoRepository.findById(id);
-
-        return destino;
+    public Destino buscarDestinoPorId(Long id) {
+        return this.destinoRepository.findById(id)
+                .orElseThrow(
+                        () -> new ResponseStatusException(
+                                HttpStatus.NOT_FOUND,
+                                "Destino não encontrado"
+                        )
+                );
     }
 
     public Destino atualizarDestino(Long id, Destino d) {
-        Optional<Destino> destino_optional = this.buscarDestinoPorId(id);
-        Destino destino = destino_optional.orElseThrow(() -> new Error("Destino não encontrado"));
+        Destino destino = this.buscarDestinoPorId(id);
 
         destino.setNome(d.getNome());
         destino.setLocalizacao(d.getLocalizacao());
@@ -42,30 +43,32 @@ public class DestinoViagemService {
         destino.setNota(d.getNota());
         destino.setDisponivel(d.getDisponivel());
 
-        this.DestinoRepository.save(destino);
+        this.destinoRepository.save(destino);
 
         return destino;
     }
 
     public Destino avaliarDestino(Long id, Double novaNota) {
 
-        Optional<Destino> destinoOptional = this.buscarDestinoPorId(id);
-        Destino destino = destinoOptional.orElseThrow(
-                () -> new RuntimeException("Destino não encontrado"));
+        Destino destino = this.buscarDestinoPorId(id);
+
+        if (novaNota < 1 || novaNota > 10) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Nota deve ser entre 1 e 10"
+            );
+        }
         Double media = (destino.getNota() + novaNota) / 2;
         destino.setNota(media);
 
-        this.DestinoRepository.save(destino);
+        this.destinoRepository.save(destino);
 
         return destino;
     }
 
     public void excluirDestino(Long id) {
-        if (this.DestinoRepository.existsById(id)) {
-            this.DestinoRepository.deleteById(id);
-        } else {
-            throw new Error("Destino não foi encontrado");
-        }
+        Destino destino = this.buscarDestinoPorId(id);
+            this.destinoRepository.deleteById(id);
     }
 
 }

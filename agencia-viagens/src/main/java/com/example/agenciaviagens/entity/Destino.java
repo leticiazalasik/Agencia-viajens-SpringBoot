@@ -1,10 +1,7 @@
 package com.example.agenciaviagens.entity;
-
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name="destinos")
@@ -13,14 +10,20 @@ public class Destino {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
+
+    @NotBlank(message = "Nome é obrigatório")
     private String nome;
 
+    @NotBlank(message = "Localização é obrigatória")
     private String localizacao;
 
+    @NotNull(message = "Nota é obrigatória")
     private Double nota;
 
+    @Embedded
     private Detalhes detalhes;
 
+    @NotNull(message = "Disponibilidade é obrigatória")
     private Boolean disponivel;
 
     public Long getId() {

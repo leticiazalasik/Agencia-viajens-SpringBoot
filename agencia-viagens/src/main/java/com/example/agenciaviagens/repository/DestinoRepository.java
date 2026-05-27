@@ -3,6 +3,7 @@ package com.example.agenciaviagens.repository;
 import java.util.List;
 import java.util.Optional;
 
+import com.example.agenciaviagens.entity.DestinoResumo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -17,7 +18,7 @@ public interface DestinoRepository extends JpaRepository<Destino, Long> {
         "AND (:nota = -1 OR d.nota >= :nota) " +
         "AND (:filtrarDisponivel = false or d.disponivel = :disponivel)"
     )
-    public List<Destino> buscarComFiltrosDinamicos(
+    public List<DestinoResumo> buscarComFiltrosDinamicos(
             @Param("nome") String nome,
             @Param("localizacao") String localizacao,
             @Param("nota") Double nota,
