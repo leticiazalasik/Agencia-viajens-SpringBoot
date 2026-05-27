@@ -22,7 +22,7 @@ public interface DestinoRepository extends JpaRepository<Destino, Long> {
             @Param("localizacao") String localizacao,
             @Param("nota") Double nota,
             @Param("disponivel") Boolean disponivel,
-            @Param("filtrarDisponivel") Boolean filtrarDisonivel
+            @Param("filtrarDisponivel") Boolean filtrarDisponivel
         );
 
 }

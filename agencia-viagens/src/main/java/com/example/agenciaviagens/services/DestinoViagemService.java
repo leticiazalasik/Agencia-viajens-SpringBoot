@@ -47,6 +47,19 @@ public class DestinoViagemService {
         return destino;
     }
 
+    public Destino avaliarDestino(Long id, Double novaNota) {
+
+        Optional<Destino> destinoOptional = this.buscarDestinoPorId(id);
+        Destino destino = destinoOptional.orElseThrow(
+                () -> new RuntimeException("Destino não encontrado"));
+        Double media = (destino.getNota() + novaNota) / 2;
+        destino.setNota(media);
+
+        this.DestinoRepository.save(destino);
+
+        return destino;
+    }
+
     public void excluirDestino(Long id) {
         if (this.DestinoRepository.existsById(id)) {
             this.DestinoRepository.deleteById(id);
