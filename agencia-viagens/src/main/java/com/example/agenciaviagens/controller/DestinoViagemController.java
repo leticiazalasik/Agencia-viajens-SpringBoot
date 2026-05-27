@@ -52,6 +52,14 @@ public class DestinoViagemController {
 
     }
 
+    @PatchMapping("/{id}/avaliacao")
+    public ResponseEntity<Destino> avaliarDestino(
+            @PathVariable Long id,
+            @RequestParam Double nota) {
+
+        return ResponseEntity.ok(destinoService.avaliarDestino(id, nota));
+    }
+
     //Deletar
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> excluirDestino(@PathVariable Long id) {
