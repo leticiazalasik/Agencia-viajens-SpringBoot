@@ -52,7 +52,7 @@ public class DestinoViagemController {
 
         Double nota = params.containsKey("p_nota")
                 ? Double.valueOf(params.get("p_nota"))
-                : null;
+                : -1D;
 
         Boolean disponivel = params.containsKey("p_disponivel")
                 ? Boolean.valueOf(params.get("p_disponivel"))
