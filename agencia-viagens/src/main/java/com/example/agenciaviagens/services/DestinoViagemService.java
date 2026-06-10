@@ -20,6 +20,11 @@ public class DestinoViagemService {
         return destinos;
     }
 
+    public List<Destino> listarTudo(){
+        List<Destino> destinos = this.destinoRepository.findAll();
+        return destinos;
+    }
+
     public Destino criarDestino(Destino destino) {
         return this.destinoRepository.save(destino);
     }

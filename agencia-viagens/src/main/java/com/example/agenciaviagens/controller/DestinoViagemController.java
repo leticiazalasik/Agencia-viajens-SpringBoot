@@ -2,6 +2,7 @@ package com.example.agenciaviagens.controller;
 
 import com.example.agenciaviagens.entity.Destino;
 import com.example.agenciaviagens.entity.DestinoResumo;
+import com.example.agenciaviagens.repository.UsuarioRepository;
 import com.example.agenciaviagens.services.DestinoViagemService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,16 +15,28 @@ import java.util.Set;
 
 import jakarta.validation.Valid;
 
+
 @RestController
 @RequestMapping("/destino-viagem")
 public class DestinoViagemController {
 
+    private final UsuarioRepository usuarioRepository;
     @Autowired
     private DestinoViagemService destinoService;
 
-    //Listar (com e sem filtro)
+    DestinoViagemController(UsuarioRepository usuarioRepository) {
+        this.usuarioRepository = usuarioRepository;
+    }
+
     @GetMapping
-    public ResponseEntity<List<DestinoResumo>> listarDestinos(
+    public ResponseEntity<List<Destino>> listarDestinos() {
+        return ResponseEntity.ok(destinoService.listarTudo());
+    }
+    
+
+    //Listar (com e sem filtro)
+    @GetMapping("/filtrado")
+    public ResponseEntity<List<DestinoResumo>> listarDestinosFiltrado(
             @RequestParam Map<String, String> params
     ) {
 
